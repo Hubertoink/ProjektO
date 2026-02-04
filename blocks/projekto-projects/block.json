@@ -1,0 +1,28 @@
+{
+  "apiVersion": 2,
+  "name": "projekto/projects",
+  "title": "ProjektO – Projekte",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "Zeigt Projekte als Badges; Details öffnen in einem Modal.",
+  "textdomain": "projekto",
+  "attributes": {
+    "statuses": { "type": "array", "default": [] },
+    "responsibles": { "type": "array", "default": [] },
+    "arbeitsbereiche": { "type": "array", "default": [] },
+    "showLegend": { "type": "boolean", "default": true },
+    "showDetails": { "type": "boolean", "default": true },
+    "showStatusBadgeCollapsed": { "type": "boolean", "default": false },
+    "linkToSingle": { "type": "boolean", "default": false },
+    "showExcerpt": { "type": "boolean", "default": true },
+    "showResponsiblePhoto": { "type": "boolean", "default": true },
+    "squareBadges": { "type": "boolean", "default": false },
+    "defaultStatus": { "type": "number", "default": 0 },
+    "limit": { "type": "number", "default": 0 },
+    "orderBy": { "type": "string", "default": "title" },
+    "order": { "type": "string", "default": "ASC" }
+  },
+  "supports": { "html": false },
+  "editorScript": "file:./editor.js",
+  "style": "file:./style.css"
+}

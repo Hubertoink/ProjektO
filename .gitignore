@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Dependencies / build
+node_modules/
+vendor/
+
+# Editor
+.vscode/
+.idea/
+
+# WordPress misc
+wp-content/uploads/
+
+# Local env
+.env
+.env.*
