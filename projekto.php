@@ -919,6 +919,7 @@ function projekto_frontend_scripts(): void {
 	<script>
 	document.addEventListener('DOMContentLoaded', function(){
 		var isCoarsePointer = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ? true : false;
+		var supportsScrollbarGutter = (window.CSS && typeof window.CSS.supports === 'function' && window.CSS.supports('scrollbar-gutter: stable')) ? true : false;
 		var previousBodyPaddingRight = '';
 		var didCompensateScrollbar = false;
 		var getScrollbarWidth = function(){
@@ -1000,7 +1001,7 @@ function projekto_frontend_scripts(): void {
 			closeModal();
 			ensureModalBaseStyles();
 			var sbw = getScrollbarWidth();
-			if (sbw > 0) {
+			if (!supportsScrollbarGutter && sbw > 0) {
 				previousBodyPaddingRight = document.body.style.paddingRight || '';
 				document.body.style.paddingRight = sbw + 'px';
 				didCompensateScrollbar = true;
@@ -1027,6 +1028,19 @@ function projekto_frontend_scripts(): void {
 			document.addEventListener('click', function(e){
 				var btn = e.target && e.target.closest ? e.target.closest('.projekto-modal-close') : null;
 				if (btn) {
+					e.preventDefault();
+					closeModal();
+				}
+			});
+		}
+
+		// Close when clicking outside the modal card (overlay area).
+		if (!root.dataset.boundOutside) {
+			root.dataset.boundOutside = '1';
+			root.addEventListener('click', function(e){
+				if (!activeModal) return;
+				// If the click hit the overlay itself (padding area), close.
+				if (e.target === activeModal) {
 					e.preventDefault();
 					closeModal();
 				}

@@ -131,6 +131,9 @@ template.projekto-modal-template{display:none !important}
 	overflow:hidden;
 }
 
+/* Prevent layout shift when locking scroll (keeps scrollbar gutter space) */
+html.projekto-modal-open{scrollbar-gutter:stable;}
+
 .projekto-modal-backdrop{
 	position:fixed;
 	inset:0;
