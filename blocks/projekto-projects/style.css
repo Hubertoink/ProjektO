@@ -377,6 +377,18 @@ html.projekto-modal-open{scrollbar-gutter:stable;}
 .projekto-content ul{list-style:disc;list-style-position:outside}
 .projekto-content ol{list-style:decimal;list-style-position:outside}
 .projekto-content li{display:list-item;margin:.25rem 0}
+.projekto-content a{
+	color:var(--projekto-color, var(--wp--preset--color--primary, #60a5fa));
+	text-decoration:underline;
+	text-decoration-thickness:.08em;
+	text-underline-offset:.14em;
+	font-weight:600;
+	word-break:break-word;
+}
+.projekto-content a:hover,
+.projekto-content a:focus-visible{
+	filter:brightness(1.12);
+}
 
 /* More Link */
 .projekto-more{
