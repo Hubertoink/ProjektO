@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ProjektO
  * Description: Projekte inkl. Status & Zuständigkeiten verwalten und per Gutenberg-Block als Badges/Accordion anzeigen.
- * Version: 1.0.4
+ * Version: 1.1.0
  * Author: hubertoink
  * Text Domain: projekto
  */
@@ -650,6 +650,65 @@ function projekto_admin_row_colors(): void {
 }
 
 /* ========================================================================
+   ADMIN – NEW BADGE (kürzlich bearbeitet)
+   ======================================================================== */
+
+add_filter('manage_projekto_projekt_posts_columns', 'projekto_admin_add_new_column');
+add_action('manage_projekto_projekt_posts_custom_column', 'projekto_admin_render_new_column', 10, 2);
+
+function projekto_admin_add_new_column(array $columns): array {
+	// Spalte "Titel" ersetzen durch "Titel" mit integriertem Badge (klappt nicht gut),
+	// daher: eigene schmale Spalte nach dem Titel
+	$new_columns = [];
+	foreach ($columns as $key => $label) {
+		$new_columns[$key] = $label;
+		if ($key === 'title') {
+			$new_columns['projekto_new'] = '';
+		}
+	}
+	return $new_columns;
+}
+
+function projekto_admin_render_new_column(string $column, int $post_id): void {
+	if ($column !== 'projekto_new') return;
+	$modified = get_the_modified_date('Y-m-d H:i:s', $post_id);
+	if ($modified && strtotime($modified) >= strtotime('-14 days')) {
+		echo '<span class="projekto-admin-new-badge">NEW</span>';
+	}
+}
+
+add_action('admin_head', 'projekto_admin_new_badge_styles');
+
+function projekto_admin_new_badge_styles(): void {
+	global $typenow, $pagenow;
+	if ($pagenow !== 'edit.php' || $typenow !== 'projekto_projekt') return;
+	?>
+	<style>
+		.column-projekto_new{width:3.5rem !important;padding-left:0 !important;padding-right:0 !important}
+		th.column-projekto_new{font-size:0 !important;line-height:0 !important}
+		.projekto-admin-new-badge{
+			display:inline-block;
+			padding:2px 7px;
+			border-radius:4px;
+			background:linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+			color:#fff;
+			font-size:10px;
+			font-weight:800;
+			letter-spacing:.06em;
+			text-transform:uppercase;
+			line-height:1.5;
+			white-space:nowrap;
+			animation:projektoAdminPulse 2.2s ease-in-out infinite;
+		}
+		@keyframes projektoAdminPulse{
+			0%,100%{box-shadow:0 1px 4px rgba(239,68,68,.3)}
+			50%{box-shadow:0 2px 10px rgba(239,68,68,.5), 0 0 8px rgba(249,115,22,.25)}
+		}
+	</style>
+	<?php
+}
+
+/* ========================================================================
    ADMIN FILTER (Projektliste)
    ======================================================================== */
 
@@ -793,6 +852,7 @@ function projekto_render_block(array $attr): string {
 					}
 					$updated_label = get_the_modified_date(get_option('date_format'), $pid);
 					$progress = (int) get_post_meta($pid, 'projekto_projekt_progress', true);
+					$is_new = (strtotime(get_the_modified_date('Y-m-d H:i:s', $pid)) >= strtotime('-14 days'));
 					
 					// Style zusammenbauen
 					$styles = [];
@@ -825,6 +885,9 @@ function projekto_render_block(array $attr): string {
 				?>
 					<?php if ($show_details): ?>
 						<div class="projekto-item<?php echo $item_hidden ? ' is-hidden' : ''; ?>" data-status="<?php echo esc_attr($status_id); ?>" <?php echo $style_attr; ?>>
+							<?php if ($is_new): ?>
+								<span class="projekto-new-badge" aria-label="Kürzlich aktualisiert">NEW</span>
+							<?php endif; ?>
 							<?php if ($show_status_badge_collapsed): ?>
 								<span class="projekto-pin" aria-hidden="true"></span>
 							<?php endif; ?>
@@ -843,6 +906,9 @@ function projekto_render_block(array $attr): string {
 												<?php endif; ?>
 												<?php if (!empty($status_name)): ?>
 													<span class="projekto-modal-status-badge" <?php echo $status_color ? 'style="--badge-color:' . esc_attr($status_color) . '"' : ''; ?>><?php echo esc_html($status_name); ?></span>
+												<?php endif; ?>
+												<?php if ($is_new): ?>
+													<span class="projekto-modal-new-badge">NEW</span>
 												<?php endif; ?>
 											</div>
 										</div>
@@ -890,6 +956,9 @@ function projekto_render_block(array $attr): string {
 						</div>
 					<?php else: ?>
 						<div class="projekto-item<?php echo $item_hidden ? ' is-hidden' : ''; ?>" data-status="<?php echo esc_attr($status_id); ?>" <?php echo $style_attr; ?>>
+							<?php if ($is_new): ?>
+								<span class="projekto-new-badge" aria-label="Kürzlich aktualisiert">NEW</span>
+							<?php endif; ?>
 							<?php if ($show_status_badge_collapsed): ?>
 								<span class="projekto-pin" aria-hidden="true"></span>
 							<?php endif; ?>
