@@ -492,7 +492,7 @@ html.projekto-modal-open{scrollbar-gutter:stable;}
 	.projekto-badges{gap:.5rem .4rem}
 	button.projekto-badge,a.projekto-badge{font-size:.8rem;padding:.4rem .65rem .4rem .75rem}
 	.projekto-pin{width:.7rem;height:.7rem;top:-.3rem;left:-.3rem}
-	.projekto-new-badge{top:-.45rem;right:-.4rem;font-size:.55rem;padding:.1rem .4rem}
+	.projekto-new-badge{top:-.45rem;right:-.35rem;font-size:.55rem;padding:.1rem .4rem}
 	.projekto-item.is-expanded .projekto-expand-inner{padding:1.1rem}
 	.projekto-expand-title{font-size:1.15rem}
 	.projekto-expand-header{flex-direction:row;align-items:flex-start;gap:.75rem}
@@ -515,8 +515,8 @@ html.projekto-modal-open{scrollbar-gutter:stable;}
 @media (max-width:480px){
 	.projekto-legend{gap:.35rem}
 	.projekto-badges{gap:.35rem !important}
-	.wp-block-projekto-projects .projekto-item{flex:1 1 auto;min-width:0;max-width:none}
-	button.projekto-badge,a.projekto-badge{font-size:.8rem;padding:.45rem .6rem .45rem .7rem}
+	.wp-block-projekto-projects .projekto-item{flex:0 1 auto;min-width:0;max-width:100%}
+	button.projekto-badge,a.projekto-badge{font-size:.8rem;padding:.45rem .6rem .45rem .7rem;white-space:normal;word-break:break-word}
 	.projekto-item.is-expanded{max-width:100%}
 	.projekto-item.is-expanded .projekto-expand-inner{padding:.9rem}
 	.projekto-expand-title{font-size:1.05rem}
